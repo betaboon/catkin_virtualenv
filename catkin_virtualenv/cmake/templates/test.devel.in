@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+for o in $@; do
+  case $o in
+    --gtest_output=*)
+      gtest_output=${o#--gtest_output=xml:}
+      pytest_args="${pytest_args} --junitxml=${gtest_output}"
+    ;;
+    __*)
+    ;;
+    *)
+      pytest_args="${pytest_args} $o"
+    ;;
+  esac
+done
+exec @project_venv_devel_dir@/bin/pytest ${pytest_args} @program_path@
